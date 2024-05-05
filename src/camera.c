@@ -115,6 +115,7 @@ void set_camera(void) NONBANKED {
 
 void init_camera(uint8_t x, uint8_t y) NONBANKED {
 	// Set up tile data
+	SWITCH_ROM(BANK(bigmap_tiles));
   set_native_tile_data(0, bigmap_tiles_TILE_COUNT, bigmap_tiles_tiles);
 	
 	// Set up color palettes
@@ -138,6 +139,7 @@ void init_camera(uint8_t x, uint8_t y) NONBANKED {
 	move_bkg(SUBPIXELS_TO_PIXELS(camera_x), WRAP_SCROLL_Y(SUBPIXELS_TO_PIXELS(camera_y) + SCROLL_Y_OFFSET));
 	
 	// Draw the initial map view for the whole screen
+	SWITCH_ROM(BANK(bigmap_map));
 	set_submap_indices(
 			map_pos_x,
 			map_pos_y,

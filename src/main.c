@@ -109,7 +109,7 @@ void main(void) NONBANKED {
 	DISPLAY_OFF;
 	init_camera(0, 0);
 	
-	SWITCH_ROM(BANK(wolfsprprawgb_tiles));
+	SWITCH_ROM(BANK(wolfsprprawgb));
 	load_and_duplicate_sprite_tile_data();
 
 	SHOW_BKG; SHOW_SPRITES;
@@ -167,6 +167,7 @@ void main(void) NONBANKED {
 		
 		if (redraw) {
 			vsync();
+			SWITCH_ROM(BANK(bigmap_map));
 			set_camera();
 			redraw = FALSE;
 		} else vsync();

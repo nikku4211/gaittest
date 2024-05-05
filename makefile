@@ -28,8 +28,8 @@ LCCFLAGS += $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Fla
 
 LCCFLAGS += -Wl-j -Wm-ya4 -autobank -Wb-ext=.rel -Wb-v # MBC + Autobanking related flags
 
-P2AMAPTMFLAGS_sms    = -map -maps_only -no_palettes -use_map_attributes -pack_mode sms -b 255
-P2AMAPTMFLAGS_gg     = -map -maps_only -no_palettes -use_map_attributes -pack_mode sms -b 255
+P2AMAPTMFLAGS_sms    = -map -maps_only -no_palettes -max_palettes 1 -use_map_attributes -pack_mode sms -b 255
+P2AMAPTMFLAGS_gg     = -map -maps_only -no_palettes -max_palettes 1 -use_map_attributes -pack_mode sms -b 255
 
 P2AMAPTMFLAGS = $(P2AMAPTMFLAGS_$(EXT))
 
@@ -38,7 +38,7 @@ P2AMAPTSFLAGS_gg     = -tiles_only -map -bpp 4 -max_palettes 1 -pack_mode sms -b
 
 P2AMAPTSFLAGS = $(P2AMAPTSFLAGS_$(EXT))
 
-P2ASPRGBFLAGS = -bpp 2 -tiles_only -b 255
+P2ASPRGBFLAGS = -bpp 2 -tiles_only -pack_mode gb -b 255
 P2ASPRSMSFLAGS = -bpp 4 -tiles_only -pack_mode sms -b 255
 
 GBDK_DEBUG = ON

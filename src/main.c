@@ -19,6 +19,9 @@ uint8_t PlayScreenPosX, PlayScreenPosY;
 uint8_t PlayDirX, PlayDirY;
 // object speeds
 int16_t PlaySpdX, PlaySpdY;
+// object frame
+uint8_t PlayFrameIndex, PlayAnimFrame, PlayFrameCounter, PlayFrameDivisor;
+const unsigned char *PlayAnimPointer;
 
 // sprite vars
 
@@ -90,24 +93,37 @@ void load_and_duplicate_sprite_tile_data(void) NONBANKED
     num_tiles = sizeof(wolfsprprawgb_tiles) >> 4;
     for(i = 0; i < num_tiles; i++)
     {
-        set_tile(i + get_tile_offset(0, 0), wolfsprprawgb_tiles + (i << 4), 0, 0);
-#if !HARDWARE_SPRITE_CAN_FLIP_X
-        set_tile(i + get_tile_offset(1, 0), wolfsprprawgb_tiles + (i << 4), 1, 0);
-#endif
-#if !HARDWARE_SPRITE_CAN_FLIP_Y
-        set_tile(i + get_tile_offset(0, 1), wolfsprprawgb_tiles + (i << 4), 0, 1);
-#endif
-#if !HARDWARE_SPRITE_CAN_FLIP_X && !HARDWARE_SPRITE_CAN_FLIP_Y
-        set_tile(i + get_tile_offset(1, 1), wolfsprprawgb_tiles + (i << 4), 1, 1);
-#endif
+        set_tile(i + 256 + get_tile_offset(0, 0), wolfsprprawgb_tiles + (i << 4), 0, 0);
     }
 }
 
+void animate_player(void) {
+	if (!PlayFrameCounter) {
+		if (PlayAnimPointer[PlayAnimFrame << 1] < 255) {
+			PlayFrameIndex = PlayAnimPointer[PlayAnimFrame << 1];
+			PlayAnimFrame++;
+		} else {
+			PlayAnimFrame = 0;
+		}
+		PlayFrameDivisor = PlayAnimPointer[(PlayAnimFrame << 1) + 1];
+		PlayFrameCounter = PlayFrameDivisor;
+	} else {
+		PlayFrameCounter--;
+	}
+}
+
 void main(void) NONBANKED {
-	uint8_t _saved_bank;
 	
 	DISPLAY_OFF;
 	init_camera(0, 0);
+	PlayPosX = 0;
+	PlayPosY = 0;
+	
+	PlayFrameIndex = 0;
+	PlayAnimFrame = 0;
+	PlayFrameCounter = 0;
+	PlayFrameDivisor = 0;
+	PlayAnimPointer = (const unsigned char *)wolfspr_run_left_anim;
 	
 	SWITCH_ROM(BANK(wolfsprprawgb));
 	load_and_duplicate_sprite_tile_data();
@@ -134,25 +150,6 @@ void main(void) NONBANKED {
 			PlayPosY = PLAYER_MAX_Y;
 		}
 		
-		//player screen position is separate from player map position
-		PlayScreenPosX = PlayPosX - camera_x;
-		PlayScreenPosY = PlayPosY - camera_y;
-		
-		if(PlayScreenPosX > PLAYER_RIGHT_CAMERA_BOUND){
-			camera_x = PlayPosX - PLAYER_RIGHT_CAMERA_BOUND;
-			redraw = TRUE;
-		}else if(PlayScreenPosX < PLAYER_LEFT_CAMERA_BOUND){
-			camera_x = PlayPosX - PLAYER_LEFT_CAMERA_BOUND;
-			redraw = TRUE;
-		}
-		if(PlayScreenPosY > PLAYER_DOWN_CAMERA_BOUND){
-			camera_y = PlayPosY - PLAYER_DOWN_CAMERA_BOUND;
-			redraw = TRUE;
-		}else if(PlayScreenPosY < PLAYER_UP_CAMERA_BOUND){
-			camera_y = PlayPosY - PLAYER_UP_CAMERA_BOUND;
-			redraw = TRUE;
-		}
-		
 		// decelerate Y and X
     if (PlaySpdY < 0) {
 			PlaySpdY++;
@@ -165,6 +162,25 @@ void main(void) NONBANKED {
 			PlaySpdX--;
 		}
 		
+		//player screen position is separate from player map position
+		PlayScreenPosX = SUBPIXELS_TO_PIXELS(PlayPosX - camera_x)+48;
+		PlayScreenPosY = SUBPIXELS_TO_PIXELS(PlayPosY - camera_y)+24;
+		
+		if(PlayScreenPosX > PLAYER_RIGHT_CAMERA_BOUND){
+			camera_x = PlayPosX - PIXELS_TO_SUBPIXELS(PLAYER_RIGHT_CAMERA_BOUND);
+			redraw = TRUE;
+		}else if(PlayScreenPosX < PLAYER_LEFT_CAMERA_BOUND){
+			camera_x = PlayPosX - PIXELS_TO_SUBPIXELS(PLAYER_LEFT_CAMERA_BOUND);
+			redraw = TRUE;
+		}
+		if(PlayScreenPosY > PLAYER_DOWN_CAMERA_BOUND){
+			camera_y = PlayPosY - PIXELS_TO_SUBPIXELS(PLAYER_DOWN_CAMERA_BOUND);
+			redraw = TRUE;
+		}else if(PlayScreenPosY < PLAYER_UP_CAMERA_BOUND){
+			camera_y = PlayPosY - PIXELS_TO_SUBPIXELS(PLAYER_UP_CAMERA_BOUND);
+			redraw = TRUE;
+		}
+		
 		if (redraw) {
 			vsync();
 			SWITCH_ROM(BANK(bigmap_map));
@@ -172,7 +188,8 @@ void main(void) NONBANKED {
 			redraw = FALSE;
 		} else vsync();
 		
-		move_metasprite_ex(wolfspr_meta[0], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
+		animate_player();
+		move_metasprite_ex(wolfspr_meta[PlayFrameIndex], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
 		
 	}
 }

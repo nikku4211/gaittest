@@ -14,13 +14,17 @@
 #define camera_max_y PIXELS_TO_SUBPIXELS((bigmap_mapHeight - DEVICE_SCREEN_HEIGHT) * 8) 
 #define camera_max_x PIXELS_TO_SUBPIXELS((bigmap_mapWidth - DEVICE_SCREEN_WIDTH) * 8)
 
+//player size constants
+#define PLAYER_WIDTH 40
+#define PLAYER_HEIGHT 32
+
 //player camera constants
 #define PLAYER_LEFT_CAMERA_BOUND 80
 #define PLAYER_RIGHT_CAMERA_BOUND 80
 #define PLAYER_UP_CAMERA_BOUND 72
 #define PLAYER_DOWN_CAMERA_BOUND 72
-#define PLAYER_MAX_Y PIXELS_TO_SUBPIXELS((bigmap_mapHeight - DEVICE_SCREEN_HEIGHT) * 8) 
-#define PLAYER_MAX_X PIXELS_TO_SUBPIXELS((bigmap_mapWidth - DEVICE_SCREEN_WIDTH) * 8)
+#define PLAYER_MAX_Y PIXELS_TO_SUBPIXELS((bigmap_mapHeight * 8) - (PLAYER_HEIGHT >> 1)) 
+#define PLAYER_MAX_X PIXELS_TO_SUBPIXELS((bigmap_mapWidth * 8) - (PLAYER_WIDTH >> 1))
 
 // physics constants
 #define MAX_X_SPEED_IN_SUBPIXELS 64

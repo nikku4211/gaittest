@@ -6,6 +6,7 @@
 
 #include "camera.h"
 #include "input.h"
+#include "animate.h"
 
 #include "res/spr/wolfsprprawgb.h"
 #include "spritemeta.h"
@@ -47,8 +48,12 @@ extern uint8_t redraw;
 // object coords
 extern int16_t PlayPosX, PlayPosY;
 extern uint8_t PlayScreenPosX, PlayScreenPosY;
-extern uint8_t PlayDirX, PlayDirY;
+extern int8_t PlayDirX, PlayDirY;
+extern uint8_t PlayFlip, PlayMoveX, PlayMoveY;
 // object speeds
 extern int16_t PlaySpdX, PlaySpdY;
+// object frame
+extern uint8_t PlayFrameIndex, PlayAnimFrame, PlayFrameCounter, PlayFrameDivisor;
+extern const unsigned char *PlayAnimPointer;
 
 #endif

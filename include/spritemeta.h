@@ -7,6 +7,8 @@
 
 BANKREF_EXTERN(wolfspr_meta)
 
+extern const unsigned char wolfspr_tile_indexes[];
+
 extern const metasprite_t wolfspr_stand_left[];
 extern const metasprite_t wolfspr_stand_up[];
 extern const metasprite_t wolfspr_stand_down[];

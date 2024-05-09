@@ -3,7 +3,6 @@
 
 #include <gbdk/platform.h>
 #include <gbdk/metasprites.h>
-#include <gbdk/incbin.h>
 
 #include "global.h"
 
@@ -16,7 +15,8 @@
 // object coords
 int16_t PlayPosX, PlayPosY;
 uint8_t PlayScreenPosX, PlayScreenPosY;
-uint8_t PlayDirX, PlayDirY;
+int8_t PlayDirX, PlayDirY;
+uint8_t PlayFlip, PlayMoveX, PlayMoveY;
 // object speeds
 int16_t PlaySpdX, PlaySpdY;
 // object frame
@@ -84,34 +84,6 @@ uint8_t get_tile_offset(uint8_t flipx, uint8_t flipy) NONBANKED
     return offset;
 }
 
-// Load metasprite tile data into VRAM, one tile at a time.
-// For each tile, create a duplicate flipped in X and/or Y
-// That's placed at tile index = get_tile_offset(flipX?, flipY?)
-void load_and_duplicate_sprite_tile_data(void) NONBANKED
-{
-    size_t i;
-    num_tiles = sizeof(wolfsprprawgb_tiles) >> 4;
-    for(i = 0; i < num_tiles; i++)
-    {
-        set_tile(i + 256 + get_tile_offset(0, 0), wolfsprprawgb_tiles + (i << 4), 0, 0);
-    }
-}
-
-void animate_player(void) {
-	if (!PlayFrameCounter) {
-		if (PlayAnimPointer[PlayAnimFrame << 1] < 255) {
-			PlayFrameIndex = PlayAnimPointer[PlayAnimFrame << 1];
-			PlayAnimFrame++;
-		} else {
-			PlayAnimFrame = 0;
-		}
-		PlayFrameDivisor = PlayAnimPointer[(PlayAnimFrame << 1) + 1];
-		PlayFrameCounter = PlayFrameDivisor;
-	} else {
-		PlayFrameCounter--;
-	}
-}
-
 void main(void) NONBANKED {
 	
 	DISPLAY_OFF;
@@ -125,8 +97,14 @@ void main(void) NONBANKED {
 	PlayFrameDivisor = 0;
 	PlayAnimPointer = (const unsigned char *)wolfspr_run_left_anim;
 	
+	memset(&player_cel, 0x00, 768);
+	
 	SWITCH_ROM(BANK(wolfsprprawgb));
-	load_and_duplicate_sprite_tile_data();
+	
+	//load_and_duplicate_sprite_tile_data();
+	__critical{
+		add_VBL(load_player_sprite_tile_data);
+	}
 
 	SHOW_BKG; SHOW_SPRITES;
 	SPRITES_8x16;
@@ -181,15 +159,23 @@ void main(void) NONBANKED {
 			redraw = TRUE;
 		}
 		
+		uint8_t PlayMetasprite = 0;
+		animate_player();
+		
+		if (!PlayFlip) {
+			PlayMetasprite = move_metasprite_ex(wolfspr_meta[PlayFrameIndex], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
+		} else {
+			PlayMetasprite = move_metasprite_flipx(wolfspr_meta[PlayFrameIndex], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
+		}
+		// Hide rest of the hardware sprites, because amount of sprites differ between animation frames.
+    hide_sprites_range(PlayMetasprite, MAX_HARDWARE_SPRITES);
+		
 		if (redraw) {
 			vsync();
 			SWITCH_ROM(BANK(bigmap_map));
 			set_camera();
 			redraw = FALSE;
 		} else vsync();
-		
-		animate_player();
-		move_metasprite_ex(wolfspr_meta[PlayFrameIndex], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
 		
 	}
 }

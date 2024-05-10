@@ -21,7 +21,7 @@ uint8_t PlayFlip, PlayMoveX, PlayMoveY;
 int16_t PlaySpdX, PlaySpdY;
 // object frame
 uint8_t PlayFrameIndex, PlayAnimFrame, PlayFrameCounter, PlayFrameDivisor;
-const unsigned char *PlayAnimPointer;
+const unsigned char * PlayAnimPointer;
 
 // sprite vars
 
@@ -160,8 +160,10 @@ void main(void) NONBANKED {
 		}
 		
 		uint8_t PlayMetasprite = 0;
+		SWITCH_ROM(BANK(wolfsprprawsms));
 		animate_player();
 		
+		SWITCH_ROM(BANK(wolfspr_meta));
 		if (!PlayFlip) {
 			PlayMetasprite = move_metasprite_ex(wolfspr_meta[PlayFrameIndex], 0, 0, 0, PlayScreenPosX, PlayScreenPosY);
 		} else {

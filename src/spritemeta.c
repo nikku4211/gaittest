@@ -8,41 +8,23 @@
 
 BANKREF(wolfspr_meta)
 
-const unsigned char padded_wolfspr_tile_indexes[] = {
-	0, 2, 4, 6, 32, 34, 36, 0,
-	94, 96, 0, 0, 0, 0, 0, 0,
-	98, 0, 0, 0, 0, 0, 0, 0,
-	0, 8, 4, 10, 12, 38, 40, 42,
-	0, 14, 16, 18, 20, 44, 46, 48,
-	0, 22, 62, 64, 66, 50, 52, 54,
-	0, 24, 26, 82, 84, 86, 0, 0,
-	68, 88, 0, 0, 0, 0, 0, 0,
-	70, 58, 0, 0, 0, 0, 0, 0,
-	72, 60, 0, 0, 0, 0, 0, 0,
-	74, 28, 0, 0, 0, 0, 0, 0,
-	76, 0, 0, 0, 0, 0, 0, 0,
-	30, 0, 0, 0, 0, 0, 0, 0,
-	78, 90, 0, 0, 0, 0, 0, 0,
-	80, 92, 0, 0, 0, 0, 0, 0
-};
-
-const unsigned char wolfspr_tile_indexes[] = {
-	0, 2, 4, 6, 32, 34, 36, dynam_end,
-	94, 96, dynam_end,
-	98, dynam_end,
-	0, 8, 4, 10, 12, 38, 40, 42, dynam_end,
-	0, 14, 16, 18, 20, 44, 46, 48, dynam_end,
-	0, 22, 62, 64, 66, 50, 52, 54, dynam_end,
-	0, 24, 26, 82, 84, 86, dynam_end,
-	68, 88, dynam_end,
-	70, 58, dynam_end,
-	72, 60, dynam_end,
-	74, 28, dynam_end,
-	76, dynam_end,
-	30, dynam_end,
-	78, 90, dynam_end,
-	80, 92, dynam_end
-};
+// const unsigned char padded_wolfspr_tile_indexes[] = {
+	// 0, 2, 4, 6, 32, 34, 36, 0,
+	// 94, 96, 0, 0, 0, 0, 0, 0,
+	// 98, 0, 0, 0, 0, 0, 0, 0,
+	// 0, 8, 4, 10, 12, 38, 40, 42,
+	// 0, 14, 16, 18, 20, 44, 46, 48,
+	// 0, 22, 62, 64, 66, 50, 52, 54,
+	// 0, 24, 26, 82, 84, 86, 0, 0,
+	// 68, 88, 0, 0, 0, 0, 0, 0,
+	// 70, 58, 0, 0, 0, 0, 0, 0,
+	// 72, 60, 0, 0, 0, 0, 0, 0,
+	// 74, 28, 0, 0, 0, 0, 0, 0,
+	// 76, 0, 0, 0, 0, 0, 0, 0,
+	// 30, 0, 0, 0, 0, 0, 0, 0,
+	// 78, 90, 0, 0, 0, 0, 0, 0,
+	// 80, 92, 0, 0, 0, 0, 0, 0
+// };
 
 const metasprite_t wolfspr_stand_left[] = {
 	METASPR_ITEM(-16, -16,  0, 0), METASPR_ITEM(0, 8,  2, 0), METASPR_ITEM(0, 8,  4, 0), METASPR_ITEM(0, 8, 6, 0), 
@@ -167,4 +149,61 @@ const unsigned char wolfspr_run_down_anim[] = {
 	12, 8,
 	13, 8,
 	14, 8, anim_end, 0
+};
+
+
+const unsigned char wolfspr_stand_left_tile_index[] = {
+	0, 2, 4, 6, 32, 34, 36, dynam_end,
+};
+const unsigned char wolfspr_stand_up_tile_index[] = {
+	94, 96, dynam_end,
+};
+const unsigned char wolfspr_stand_down_tile_index[] = {
+	98, dynam_end,
+};
+
+const unsigned char wolfspr_run_left_0_tile_index[] = {
+	0, 8, 4, 10, 12, 38, 40, 42, dynam_end,
+};
+const unsigned char wolfspr_run_left_1_tile_index[] = {
+	0, 14, 16, 18, 20, 44, 46, 48, dynam_end,
+};
+const unsigned char wolfspr_run_left_2_tile_index[] = {
+	0, 22, 62, 64, 66, 50, 52, 54, dynam_end,
+};
+const unsigned char wolfspr_run_left_3_tile_index[] = {
+	0, 24, 26, 82, 84, 86, dynam_end,
+};
+
+const unsigned char wolfspr_run_up_0_tile_index[] = {
+	68, 88, dynam_end,
+};
+const unsigned char wolfspr_run_up_1_tile_index[] = {
+	70, 58, dynam_end,
+};
+const unsigned char wolfspr_run_up_2_tile_index[] = {
+	72, 60, dynam_end,
+};
+const unsigned char wolfspr_run_up_3_tile_index[] = {
+	74, 28, dynam_end,
+};
+
+const unsigned char wolfspr_run_down_0_tile_index[] = {
+	76, dynam_end,
+};
+const unsigned char wolfspr_run_down_1_tile_index[] = {
+	30, dynam_end,
+};
+const unsigned char wolfspr_run_down_2_tile_index[] = {
+	78, 90, dynam_end,
+};
+const unsigned char wolfspr_run_down_3_tile_index[] = {
+	80, 92, dynam_end
+};
+
+const unsigned char * const wolfspr_tile_pointers[15] = {
+	wolfspr_stand_left_tile_index, wolfspr_stand_up_tile_index, wolfspr_stand_down_tile_index,
+	wolfspr_run_left_0_tile_index, wolfspr_run_left_1_tile_index, wolfspr_run_left_2_tile_index, wolfspr_run_left_3_tile_index,
+	wolfspr_run_up_0_tile_index, wolfspr_run_up_1_tile_index, wolfspr_run_up_2_tile_index, wolfspr_run_up_3_tile_index,
+	wolfspr_run_down_0_tile_index, wolfspr_run_down_1_tile_index, wolfspr_run_down_2_tile_index, wolfspr_run_down_3_tile_index
 };

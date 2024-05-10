@@ -41,12 +41,11 @@ void set_player_sprite_tile_data(void) NONBANKED {
 	uint8_t copy_tile_number = 0;
 	for (i = 0; i < 8; i++)
 	{
-		if (wolfspr_tile_indexes[i] == 255) {
+		if (wolfspr_tile_pointers[PlayAnimFrame][i] == 255) {
 			break;
 		}
-		copy_tile_number += 2;
+		set_sprite_native_data((i << 1), 2, &wolfsprprawsms_tiles[(wolfspr_tile_pointers[PlayAnimFrame][i]) << 4]);
 	}
-	set_sprite_native_data(0, copy_tile_number, wolfsprprawsms_tiles);
 }
 
 void animate_player(void) NONBANKED{
@@ -78,9 +77,9 @@ void animate_player(void) NONBANKED{
 		} else {
 			PlayAnimFrame = 0;
 		}
+		set_player_sprite_tile_data();
 		PlayFrameDivisor = PlayAnimPointer[(PlayAnimFrame << 1) + 1];
 		PlayFrameCounter = PlayFrameDivisor;
-		set_player_sprite_tile_data();
 	} else {
 		PlayFrameCounter--;
 	}

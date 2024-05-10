@@ -38,4 +38,25 @@ extern const unsigned char wolfspr_run_left_anim[];
 extern const unsigned char wolfspr_run_up_anim[];
 extern const unsigned char wolfspr_run_down_anim[];
 
+extern const unsigned char wolfspr_stand_left_tile_index[];
+extern const unsigned char wolfspr_stand_up_tile_index[];
+extern const unsigned char wolfspr_stand_down_tile_index[];
+
+extern const unsigned char wolfspr_run_left_0_tile_index[];
+extern const unsigned char wolfspr_run_left_1_tile_index[];
+extern const unsigned char wolfspr_run_left_2_tile_index[];
+extern const unsigned char wolfspr_run_left_3_tile_index[];
+
+extern const unsigned char wolfspr_run_up_0_tile_index[];
+extern const unsigned char wolfspr_run_up_1_tile_index[];
+extern const unsigned char wolfspr_run_up_2_tile_index[];
+extern const unsigned char wolfspr_run_up_3_tile_index[];
+
+extern const unsigned char wolfspr_run_down_0_tile_index[];
+extern const unsigned char wolfspr_run_down_1_tile_index[];
+extern const unsigned char wolfspr_run_down_2_tile_index[];
+extern const unsigned char wolfspr_run_down_3_tile_index[];
+
+extern const unsigned char * const wolfspr_tile_pointers[15];
+
 #endif

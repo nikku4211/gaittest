@@ -8,7 +8,7 @@
 #include "input.h"
 #include "animate.h"
 
-#include "res/spr/wolfsprprawgb.h"
+#include "res/spr/wolfsprprawsms.h"
 #include "spritemeta.h"
 
 //camera values

@@ -97,14 +97,14 @@ void main(void) NONBANKED {
 	PlayFrameDivisor = 0;
 	PlayAnimPointer = (const unsigned char *)wolfspr_run_left_anim;
 	
-	memset(&player_cel, 0x00, 768);
+	//memset(&player_cel, 0x00, 768);
 	
-	SWITCH_ROM(BANK(wolfsprprawgb));
+	SWITCH_ROM(BANK(wolfsprprawsms));
 	
 	//load_and_duplicate_sprite_tile_data();
-	__critical{
-		add_VBL(load_player_sprite_tile_data);
-	}
+	// __critical{
+		// add_VBL(load_player_sprite_tile_data);
+	// }
 
 	SHOW_BKG; SHOW_SPRITES;
 	SPRITES_8x16;

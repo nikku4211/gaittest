@@ -4,32 +4,49 @@
 
 #include "global.h"
 
-unsigned char player_cel[768];
-uint8_t double_buffer_counter = 0;
+//unsigned char player_cel[768];
+//uint8_t double_buffer_counter = 0;
 
 // Load metasprite tile data into VRAM, one tile at a time.
-void load_player_sprite_tile_data(void) NONBANKED
+/* void load_player_sprite_tile_data(void) NONBANKED
 {
   //copy sprite cel to VRAM
 	vmemcpy(0x2000, &player_cel[0], 768);
-}
+} */
 
-void set_player_sprite_tile_data(void) NONBANKED {
+/* void old_player_sprite_tile_data(void) NONBANKED {
 	size_t i;
+	size_t j;
 	for (i = 0; i < 8; i++)
 	{
 		if (wolfspr_tile_indexes[i] == 255) {
 			break;
 		}
-		memcpy(&player_cel[i << 8], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4), 2);
-		memcpy(&player_cel[(i << 8) + 4], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 2, 2);
-		memcpy(&player_cel[(i << 8) + 8], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 4, 2);
-		memcpy(&player_cel[(i << 8) + 12], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 6, 2);
-		memcpy(&player_cel[(i << 8) + 16], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 8, 2);
-		memcpy(&player_cel[(i << 8) + 20], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 10, 2);
-		memcpy(&player_cel[(i << 8) + 24], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 12, 2);
-		memcpy(&player_cel[(i << 8) + 28], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 14, 2);
+		for (j = 0; j < 16; j += 2) {
+			player_cel[(i << 8) + (j << 1)] = wolfsprprawgb_tiles[(wolfspr_tile_indexes[i] << 4) + j];
+			player_cel[(i << 8) + (j << 1) + 1] = wolfsprprawgb_tiles[(wolfspr_tile_indexes[i] << 4) + j + 1];
+		}
+		// memcpy(&player_cel[(i << 8) + 4], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 2, 2);
+		// memcpy(&player_cel[(i << 8) + 8], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 4, 2);
+		// memcpy(&player_cel[(i << 8) + 12], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 6, 2);
+		// memcpy(&player_cel[(i << 8) + 16], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 8, 2);
+		// memcpy(&player_cel[(i << 8) + 20], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 10, 2);
+		// memcpy(&player_cel[(i << 8) + 24], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 12, 2);
+		// memcpy(&player_cel[(i << 8) + 28], &wolfsprprawgb_tiles + (wolfspr_tile_indexes[i] << 4) + 14, 2);
 	}
+} */
+
+void set_player_sprite_tile_data(void) NONBANKED {
+	size_t i;
+	uint8_t copy_tile_number = 0;
+	for (i = 0; i < 8; i++)
+	{
+		if (wolfspr_tile_indexes[i] == 255) {
+			break;
+		}
+		copy_tile_number += 2;
+	}
+	set_sprite_native_data(0, copy_tile_number, wolfsprprawsms_tiles);
 }
 
 void animate_player(void) NONBANKED{
